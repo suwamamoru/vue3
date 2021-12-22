@@ -12,10 +12,10 @@
       <th>状態</th>
     </tr>
     <tbody v-for="(todo,index) in filteredTodos" :key="index">
-      <th>{{todo.i}}</th>
+      <th>{{todo.indexId}}</th>
       <th>{{todo.item}}</th>
-      <th><button @click="taskChange(todo.i)">{{todo.state}}</button></th>
-      <th><button @click="deleteItem(todo.i)">削除</button></th>
+      <th><button @click="taskChange(todo.indexId)">{{todo.state}}</button></th>
+      <th><button @click="deleteItem(todo.indexId)">削除</button></th>
     </tbody>
   </table>
 
@@ -38,38 +38,38 @@ export default {
   },
   computed: {
     filteredTodos() {
-      if(this.filter == 'all') {
+      if(this.filter === 'all') {
         return this.todos
-      } else if(this.filter == 'working') {
-        return this.todos.filter(todo => todo.state == '作業中')
+      } else if(this.filter === 'working') {
+        return this.todos.filter(todo => todo.state === '作業中')
       } else {
-        return this.todos.filter(todo => todo.state == '完了')
+        return this.todos.filter(todo => todo.state === '完了')
       }
     }
   },
   methods: {
     addItem() {
-      if(this.newItem == '')return
+      if(this.newItem === '')return
       const todo = {
         item: this.newItem,
         state: '作業中',
-        i: Object.keys(this.todos).length
+        indexId: this.todos.length
       }
       this.todos.push(todo)
       this.newItem = ''
     },
-    taskChange(i) {
-      if(this.todos[i].state == '作業中') {
-        this.todos[i].state = '完了'
+    taskChange(indexId) {
+      if(this.todos[indexId].state === '作業中') {
+        this.todos[indexId].state = '完了'
       } else {
-        this.todos[i].state = '作業中'
+        this.todos[indexId].state = '作業中'
       }
     },
-    deleteItem(i) {
-      this.todos.splice(i,1)
-      for (let k = 0; k < Object.keys(this.todos).length; k++) {
-        Object.values(this.todos)[k].i = Object.keys(this.todos)[k]
-      }
+    deleteItem(indexId) {
+      this.todos.splice(indexId,1)
+      Object.keys(this.todos).forEach(key => {
+        Object.values(this.todos)[key].indexId = Object.keys(this.todos)[key]
+      })
     }
   }
 }
