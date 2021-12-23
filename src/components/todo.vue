@@ -67,9 +67,7 @@ export default {
     },
     deleteItem(indexId) {
       this.todos.splice(indexId,1)
-      Object.keys(this.todos).forEach(key => {
-        Object.values(this.todos)[key].indexId = Object.keys(this.todos)[key]
-      })
+      this.todos.forEach(todo => todo.indexId = this.todos.indexOf(todo))
     }
   }
 }
